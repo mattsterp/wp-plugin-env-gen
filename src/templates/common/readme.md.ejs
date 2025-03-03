@@ -1,0 +1,28 @@
+# <%= pluginName %> <%= pluginDescription %> ## Description This is a <%=
+pluginType === 'classic' ? 'classic PHP' : pluginType === 'block' ?
+'block-based' : 'block library' %> WordPress plugin generated using the
+`wp-plugin-env-gen` CLI tool. <% if (pluginType === 'block' || pluginType ===
+'block-library') { %> ## Development ### Prerequisites -
+[Node.js](https://nodejs.org/) (v14 or later) - [npm](https://www.npmjs.com/)
+(v6 or later) <% if (includeWpEnv) { %>-
+[wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
+(for local development environment)<% } %> <% if (includeWpNow) { %>-
+[wp-now](https://github.com/WordPress/playground-tools) (for serverless
+previews)<% } %> ### Setup 1. Clone this repository 2. Run `npm install` to
+install dependencies 3. Run `npm run start` to start the development build <% if
+(includeWpEnv) { %>4. Run `wp-env start` to start the local WordPress
+environment<% } %> ### Available Scripts - `npm run start`: Start the
+development build with hot reloading - `npm run build`: Create a production
+build - `npm run lint:js`: Lint JavaScript files - `npm run lint:css`: Lint CSS
+files - `npm run lint:php`: Lint PHP files (if phpcs is installed) <% } %> <% if
+(includeWpEnv) { %> ## Local Development with wp-env This plugin comes with a
+`.wp-env.json` configuration file that allows you to quickly set up a local
+WordPress development environment. 1. Install the wp-env package globally: `npm
+install -g @wordpress/env` 2. Start the environment: `wp-env start` 3. Access
+your local WordPress site at http://localhost:8888 4. The plugin will be
+automatically activated in your WordPress installation <% } %> <% if
+(includeWpNow) { %> ## Preview with wp-now This plugin includes wp-now
+integration for quick serverless previews. 1. Install wp-now globally: `npm
+install -g @wp-now/wp-now` 2. Run the setup script: `./wp-now-setup.sh` 3. Start
+the preview: `wp-now start` 4. Access your preview at the URL provided by wp-now
+<% } %> ## License [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)

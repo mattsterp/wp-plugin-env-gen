@@ -1,0 +1,44 @@
+<?php
+/**
+ * Admin page functionality for <%= pluginName %>
+* * @package <%= pluginName %> */ // If this file is called directly, abort. if
+( ! defined( 'WPINC' ) ) { die; } /** * Add admin menu item */ function <%=
+pluginSlug.replace(/-/g, '_') %>_add_admin_menu() { add_menu_page( __( '<%=
+pluginName %>', '<%= pluginSlug %>' ), __( '<%= pluginName %>', '<%= pluginSlug
+%>' ), 'manage_options', '<%= pluginSlug %>', '<%= pluginSlug.replace(/-/g, '_')
+%>_admin_page', 'dashicons-block-default', 100 ); } add_action( 'admin_menu',
+'<%= pluginSlug.replace(/-/g, '_') %>_add_admin_menu' ); /** * Render admin page
+content */ function <%= pluginSlug.replace(/-/g, '_') %>_admin_page() { // Check
+user capabilities if ( ! current_user_can( 'manage_options' ) ) { return; } ?>
+<div class="wrap">
+  <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+  <div class="card">
+    <h2><?php _e( 'Welcome to <%= pluginName %>', '<%= pluginSlug %>' ); ?></h2>
+    <p>
+      <?php _e( 'This is your block plugin admin page.', '<%= pluginSlug %>' );
+      ?>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2><?php _e( 'How to Use', '<%= pluginSlug %>' ); ?></h2>
+    <p>
+      <?php _e( 'To use the block, edit a post or page and search for "<%= pluginName %>"
+      in the block inserter.', '<%= pluginSlug %>' ); ?>
+    </p>
+  </div>
+</div>
+<?php
+}
+
+/**
+ * Enqueue admin styles
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_admin_styles() { $screen =
+get_current_screen(); // Only load on this plugin's admin page if ( $screen &&
+strpos( $screen->id, '<%= pluginSlug %>' ) !== false ) { wp_enqueue_style( '<%=
+pluginSlug %>-admin-style', <%= pluginSlug.replace(/-/g, '_').toUpperCase()
+%>_URL . 'admin/css/admin.css', array(), <%= pluginSlug.replace(/-/g,
+'_').toUpperCase() %>_VERSION ); } } add_action( 'admin_enqueue_scripts', '<%=
+pluginSlug.replace(/-/g, '_') %>_admin_styles' );

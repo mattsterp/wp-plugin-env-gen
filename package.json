@@ -1,0 +1,35 @@
+{
+  "name": "wp-plugin-env-gen",
+  "version": "1.0.0",
+  "description": "CLI tool for scaffolding WordPress plugin development environments",
+  "main": "src/index.js",
+  "bin": {
+    "wp-plugin-env-gen": "./bin/wp-plugin-env-gen.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "cli",
+    "scaffold",
+    "generator",
+    "blocks",
+    "wp-env",
+    "wp-now"
+  ],
+  "author": "Matthew J Peters",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "ejs": "^3.1.10",
+    "execa": "^9.5.2",
+    "fs-extra": "^11.3.0",
+    "inquirer": "^12.4.2",
+    "ora": "^8.2.0"
+  }
+}

@@ -1,0 +1,13 @@
+/** * <%= pluginName %> - Block Registration */ import { registerBlockType }
+from '@wordpress/blocks'; import { __ } from '@wordpress/i18n'; import Edit from
+'./block/index'; import './block/style.css'; /** * Save function for the block *
+This is the output that will be rendered on the front-end */ function Save({
+attributes }) { const { content } = attributes; const blockProps =
+wp.blockEditor.useBlockProps.save(); return (
+<div {...blockProps}>
+  <div className="<%= pluginSlug %>-block-content">
+    <p>{content}</p>
+  </div>
+</div>
+); } /** * Register the block */ registerBlockType('<%= pluginSlug %>/<%=
+pluginSlug %>', { edit: Edit, save: Save, });

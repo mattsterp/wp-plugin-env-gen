@@ -1,0 +1,8 @@
+{ "$schema": "https://schemas.wp.org/trunk/block.json", "apiVersion": 3, "name":
+"<%= pluginSlug %>/<%= pluginSlug %>", "version": "1.0.0", "title": "<%=
+pluginName %>", "category": "widgets", "icon": "smiley", "description": "<%=
+pluginDescription %>", "supports": { "html": false, "align": true },
+"textdomain": "<%= pluginSlug %>", "editorScript": "file:./index.js",
+"editorStyle": "file:./editor.css", "style": "file:./style.css", "attributes": {
+"content": { "type": "string", "default": "Hello from <%= pluginName %> block!"
+} } }

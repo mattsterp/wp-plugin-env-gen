@@ -1,0 +1,36 @@
+<?php
+/**
+ * Plugin Name: <%= pluginName %>
+* Plugin URI: https://example.com/<%= pluginSlug %> * Description: <%=
+pluginDescription %> * Version: 1.0.0 * Author: Your Name * Author URI:
+https://example.com * License: GPL-2.0+ * License URI:
+http://www.gnu.org/licenses/gpl-2.0.txt * Text Domain: <%= pluginSlug %> *
+Domain Path: /languages */ // If this file is called directly, abort. if ( !
+defined( 'WPINC' ) ) { die; } /** * Current plugin version. */ define( '<%=
+pluginSlug.replace(/-/g, '_').toUpperCase() %>_VERSION', '1.0.0' ); /** * Plugin
+base path. */ define( '<%= pluginSlug.replace(/-/g, '_').toUpperCase() %>_PATH',
+plugin_dir_path( __FILE__ ) ); /** * Plugin base URL. */ define( '<%=
+pluginSlug.replace(/-/g, '_').toUpperCase() %>_URL', plugin_dir_url( __FILE__ )
+); /** * Plugin text domain. */ define( '<%= pluginSlug.replace(/-/g,
+'_').toUpperCase() %>_TEXT_DOMAIN', '<%= pluginSlug %>' ); /** * Load plugin
+textdomain. */ function <%= pluginSlug.replace(/-/g, '_') %>_load_textdomain() {
+load_plugin_textdomain( '<%= pluginSlug %>', false, dirname( plugin_basename(
+__FILE__ ) ) . '/languages/' ); } add_action( 'plugins_loaded', '<%=
+pluginSlug.replace(/-/g, '_') %>_load_textdomain' ); <% if (includeAdminPage) {
+%> /** * Include admin page functionality. */ require_once <%=
+pluginSlug.replace(/-/g, '_').toUpperCase() %>_PATH .
+'includes/admin/admin-page.php'; <% } %> <% if (includeSettingsPage) { %> /** *
+Include settings page functionality. */ require_once <%=
+pluginSlug.replace(/-/g, '_').toUpperCase() %>_PATH .
+'includes/settings/settings-page.php'; <% } %> /** * Register block. */ function
+<%= pluginSlug.replace(/-/g, '_') %>_register_block() { // Register the block by
+passing the location of block.json register_block_type( <%=
+pluginSlug.replace(/-/g, '_').toUpperCase() %>_PATH . 'build/block' ); }
+add_action( 'init', '<%= pluginSlug.replace(/-/g, '_') %>_register_block' ); /**
+* The code that runs during plugin activation. */ function <%=
+pluginSlug.replace(/-/g, '_') %>_activate() { // Activation code here }
+register_activation_hook( __FILE__, '<%= pluginSlug.replace(/-/g, '_')
+%>_activate' ); /** * The code that runs during plugin deactivation. */ function
+<%= pluginSlug.replace(/-/g, '_') %>_deactivate() { // Deactivation code here }
+register_deactivation_hook( __FILE__, '<%= pluginSlug.replace(/-/g, '_')
+%>_deactivate' );

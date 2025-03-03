@@ -1,0 +1,119 @@
+<?php
+/**
+ * Settings page functionality for <%= pluginName %>
+ *
+ * @package <%= pluginName %>
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Add settings menu item
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_add_settings_menu() {
+	add_options_page(
+		__( '<%= pluginName %> Settings', '<%= pluginSlug %>' ),
+		__( '<%= pluginName %>', '<%= pluginSlug %>' ),
+		'manage_options',
+		'<%= pluginSlug %>-settings',
+		'<%= pluginSlug.replace(/-/g, '_') %>_settings_page'
+	);
+}
+add_action( 'admin_menu', '<%= pluginSlug.replace(/-/g, '_') %>_add_settings_menu' );
+
+/**
+ * Register settings
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_register_settings() {
+	// Register a new setting for our options page
+	register_setting(
+		'<%= pluginSlug %>_options',
+		'<%= pluginSlug %>_options',
+		array(
+			'sanitize_callback' => '<%= pluginSlug.replace(/-/g, '_') %>_validate_options',
+		)
+	);
+
+	// Register a new section
+	add_settings_section(
+		'<%= pluginSlug %>_block_section',
+		__( 'Block Settings', '<%= pluginSlug %>' ),
+		'<%= pluginSlug.replace(/-/g, '_') %>_block_section_callback',
+		'<%= pluginSlug %>-settings'
+	);
+
+	// Register fields
+	add_settings_field(
+		'<%= pluginSlug %>_default_content',
+		__( 'Default Block Content', '<%= pluginSlug %>' ),
+		'<%= pluginSlug.replace(/-/g, '_') %>_default_content_callback',
+		'<%= pluginSlug %>-settings',
+		'<%= pluginSlug %>_block_section'
+	);
+}
+add_action( 'admin_init', '<%= pluginSlug.replace(/-/g, '_') %>_register_settings' );
+
+/**
+ * Block section callback
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_block_section_callback() {
+	echo '<p>' . __( 'Configure the default settings for your block.', '<%= pluginSlug %>' ) . '</p>';
+}
+
+/**
+ * Default content field callback
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_default_content_callback() {
+	$options = get_option( '<%= pluginSlug %>_options' );
+	$value = isset( $options['default_content'] ) ? $options['default_content'] : '';
+	?>
+	<textarea id="<%= pluginSlug %>_default_content" name="<%= pluginSlug %>_options[default_content]" rows="4" cols="50"><?php echo esc_textarea( $value ); ?></textarea>
+	<p class="description"><?php _e( 'Default content for new blocks. Leave empty to use the block default.', '<%= pluginSlug %>' ); ?></p>
+	<?php
+}
+
+/**
+ * Validate options
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_validate_options( $input ) {
+	$output = array();
+
+	// Sanitize each option
+	if ( isset( $input['default_content'] ) ) {
+		$output['default_content'] = wp_kses_post( $input['default_content'] );
+	}
+
+	return $output;
+}
+
+/**
+ * Render settings page
+ */
+function <%= pluginSlug.replace(/-/g, '_') %>_settings_page() {
+	// Check user capabilities
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	?>
+	<div class="wrap">
+		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		
+		<form action="options.php" method="post">
+			<?php
+			// Output security fields
+			settings_fields( '<%= pluginSlug %>_options' );
+			
+			// Output setting sections and their fields
+			do_settings_sections( '<%= pluginSlug %>-settings' );
+			
+			// Output submit button
+			submit_button();
+			?>
+		</form>
+	</div>
+	<?php
+} 
