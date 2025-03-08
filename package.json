@@ -31,5 +31,8 @@
     "fs-extra": "^11.3.0",
     "inquirer": "^12.4.2",
     "ora": "^8.2.0"
+  },
+  "peerDependencies": {
+    "@wordpress/create-block": "^4.36.0"
   }
 }

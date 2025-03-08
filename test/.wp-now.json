@@ -1,3 +1,0 @@
-{ "name": "test", "plugins": [ "." ], "themes": [
-"twentytwentyfour" ], "port": 8888, "phpVersion": "8.1", "env": { "WP_DEBUG":
-true, "SCRIPT_DEBUG": true } }

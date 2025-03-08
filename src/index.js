@@ -11,6 +11,7 @@ import { fileURLToPath } from "url";
 import { generateClassicPlugin } from "./generators/classic-plugin.js";
 import { generateBlockPlugin } from "./generators/block-plugin.js";
 import { generateBlockLibrary } from "./generators/block-library.js";
+import { generateWithWpCreateBlock } from "./generators/wp-create-block.js";
 
 // Get the current file's directory
 const __filename = fileURLToPath(import.meta.url);
@@ -58,19 +59,42 @@ program
             { name: "Classic Plugin (PHP-only)", value: "classic" },
             { name: "Block Plugin (single block)", value: "block" },
             { name: "Block Library (multiple blocks)", value: "block-library" },
+            {
+              name: "Official WordPress Block (@wordpress/create-block)",
+              value: "wp-create-block",
+            },
           ],
+        },
+        {
+          type: "list",
+          name: "blockVariant",
+          message: "Block Variant:",
+          choices: [
+            { name: "Static Block", value: "static" },
+            { name: "Dynamic Block", value: "dynamic" },
+          ],
+          when: (answers) => answers.pluginType === "wp-create-block",
+        },
+        {
+          type: "input",
+          name: "namespace",
+          message: "Block Namespace (optional):",
+          default: "create-block",
+          when: (answers) => answers.pluginType === "wp-create-block",
         },
         {
           type: "confirm",
           name: "includeAdminPage",
           message: "Include Admin Page:",
           default: false,
+          when: (answers) => answers.pluginType !== "wp-create-block",
         },
         {
           type: "confirm",
           name: "includeSettingsPage",
           message: "Include Settings Page:",
           default: false,
+          when: (answers) => answers.pluginType !== "wp-create-block",
         },
         {
           type: "confirm",
@@ -104,7 +128,12 @@ program
           return;
         }
 
-        fs.mkdirSync(targetDir, { recursive: true });
+        // For wp-create-block, we don't need to create the directory as the tool will do it
+        if (answers.pluginType !== "wp-create-block") {
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
+
+        let pluginDir = targetDir;
 
         // Generate plugin based on type
         switch (answers.pluginType) {
@@ -117,20 +146,23 @@ program
           case "block-library":
             await generateBlockLibrary(targetDir, answers);
             break;
+          case "wp-create-block":
+            pluginDir = await generateWithWpCreateBlock(targetDir, answers);
+            break;
         }
 
         // Initialize Git repository if requested
         if (answers.initGit) {
           const { execa } = await import("execa");
           try {
-            await execa("git", ["init"], { cwd: targetDir });
-            await execa("git", ["add", "."], { cwd: targetDir });
+            await execa("git", ["init"], { cwd: pluginDir });
+            await execa("git", ["add", "."], { cwd: pluginDir });
             await execa(
               "git",
               ["commit", "-m", "Initial commit from wp-plugin-env-gen"],
-              { cwd: targetDir }
+              { cwd: pluginDir }
             );
-            spinner.succeed(`Git repository initialized in ${targetDir}`);
+            spinner.succeed(`Git repository initialized in ${pluginDir}`);
           } catch (error) {
             spinner.warn(
               "Could not initialize Git repository. Please make sure Git is installed."
